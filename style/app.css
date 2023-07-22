@@ -1,0 +1,61 @@
+html,
+body {
+    margin: 0;
+}
+
+h1 {
+    color: white;
+    background-color: #212121;
+    text-align: center;
+    margin: 0;
+}
+
+main {
+    display: flex;
+    height: calc(100vh - 37px);
+}
+
+#list {
+    height: 100%;
+    flex: 2;
+}
+
+#form {
+    background-color: #e9e9e9;
+    height: 100%;
+    flex: 1;
+    padding: 10px 20px;
+}
+
+#iImportant {
+    color: #616166;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+#iImportant:hover {
+    color: #333;
+}
+
+.important-icon {
+    color: tomato !important;
+}
+
+.task-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 10px;
+    background-color: #717171;
+    border-radius: 10px;
+    margin: 10px;
+    align-items: center;
+}
+
+.task-container div{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    text-align: center;
+    margin: 10px;
+}
