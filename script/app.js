@@ -1,10 +1,13 @@
 let isImportant = false;
 let isVisible = true;
 
+let tasks = [];
+
 const NEW = 'new';
 const IN_PROGRESS = "in progress";
 const COMPLETED = "completed";
 const CANCELLED = "cancelled"
+const PENDING = "pending";
 
 function saveTask() {
     const title = $("#txtTitle").val();
@@ -17,13 +20,26 @@ function saveTask() {
     let newTask = new Task(isImportant, title, desc, color, date, status, budget);
     console.log(newTask);
 
+
+    $.ajax({
+        type: "POST",
+        url: "http://fsdiapi.azurewebsites.net/api/tasks/",
+        data: JSON.stringify(newTask),
+        contentType: "application/json",
+        success: (res) => {
+            console.log(res);
+        },
+        error: (e) => {
+            console.log(e);
+        },
+    });
     clearForm();
-    displayTask(newTask);
+    // displayTask(newTask);
 }
 
 function displayTask(task) {
-    var  url = '';
-    switch (task.status) {
+    var url = '';
+    switch (task.status.toLowerCase()) {
         case NEW:
             url = ('https://c4.wallpaperflare.com/wallpaper/108/140/869/digital-digital-art-artwork-fantasy-art-drawing-hd-wallpaper-thumb.jpg');
             break;
@@ -40,19 +56,20 @@ function displayTask(task) {
             url = ('https://marketplace.canva.com/EAFHm4JWsu8/1/0/1600w/canva-pink-landscape-desktop-wallpaper-HGxdJA_xIx0.jpg');
             break;
 
+        case PENDING:
+            url = ('https://marketplace.canva.com/EAFHm4JWsu8/1/0/1600w/canva-pink-landscape-desktop-wallpaper-HGxdJA_xIx0.jpg');
+            break;
         default:
             break;
     }
 
     let syntax = `
-    <div class="task-container" style='border-color: ${task.color}  background-image: url(${url})'>
+    <div class="task-container" style='border-color: ${task.color};  background-image: url(${url});'>
         <div class="info">
             <h5>Title: ${task.title}</h5>
-            <p>Description: ${task.desc}</p>
+            <p>Description: ${task.description}</p>
         </div>
-        <div class="status">
-            <label class=""> Status: ${task.status}</label>
-        </div>
+            <label class="status"> Status: ${task.status}</label>
         <div class="date-budget">
             <label>Date Start: ${task.startDate}</label>
             <label>Budger: ${task.budget}</label>
@@ -88,12 +105,53 @@ function toggleImportant() {
 
 }
 
+function toggleVisibility() {
+    if (isVisible) {
+        $('#form').fadeOut();
+        isVisible = false;
+    } else {
+        $('#form').fadeIn();
+        isVisible = true;
+    }
+}
+
+function loadTask() {
+    $.ajax({
+        type: "GET",
+        url: "http://fsdiapi.azurewebsites.net/api/tasks/",
+        success: (res) => {
+            tasks = JSON.parse(res);
+
+            displayTasks();
+
+        },
+        error: (e) => {
+            console.log(e);
+        },
+
+    });
+
+}
+
+function displayTasks() {
+
+    console.log(tasks);
+
+    for (let i = 0; i < tasks.length; i++) {
+        const task = tasks[i];
+        if (task.title == "Market")
+            displayTask(task);
+    }
+}
+
 function init() {
     console.log("task manager");
 
+    $('#btnDetails').click(toggleVisibility);
     $("#btnSave").click(saveTask);
     $("#iImportant").click(toggleImportant);
 
+    loadTask();
 }
 
 window.onload = init;

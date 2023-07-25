@@ -54,21 +54,31 @@ main {
     border: 1px solid ;
     background-repeat: no-repeat;
     background-size: cover;
+    color: white;
 }
 
 .task-container .info{
     flex : 3;
+
 }
+
+
 .task-container.info h5 {
+    color: white;
     margin-bottom: 3px;
 }
 
 .task-container .info p {
+    color: white;
     margin: 0;
 }
 
 .task-container .status {
     flex: 1;
+    border: 1px solid white;
+    background-color: black;
+    border-radius: 10px;
+    width: 50%;
 }
 
 
