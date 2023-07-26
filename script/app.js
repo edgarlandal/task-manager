@@ -150,6 +150,9 @@ function init() {
     $('#btnDetails').click(toggleVisibility);
     $("#btnSave").click(saveTask);
     $("#iImportant").click(toggleImportant);
+    $('#btnDelete').click( () => {
+        $(".pending-tasks").html('');
+    })
 
     loadTask();
 }
